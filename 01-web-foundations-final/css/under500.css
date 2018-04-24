@@ -1,0 +1,11 @@
+/*  Could make stuff disappear but assignment does not allow it */
+/* .header-logo
+ {
+  display: none;
+} */
+.header-name {
+  font-size: 2em;
+}
+.header-subtitle {
+  font-size: 1.25em;
+}
