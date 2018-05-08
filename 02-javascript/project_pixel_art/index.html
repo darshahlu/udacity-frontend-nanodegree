@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Darshan Ahluwalia">
+  <meta name="description" content="The Pixel Art app allows users to create
+a simple drawing. The app is built with HTML, CSS and JavaScript.">
+  <title>Pixel Art, woo!&#127812; </title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <h1>Pixel Art Maker</h1>
+    <h1>&#127812; </h1>
+
+  </header>
+  <main>
+    <!-- CONTROLS SECTION -->
+    <section>
+      <form>
+        <fieldset>
+          <legend>Grid Dimensions</legend>
+          <div class="input-row">
+            <label for="grid-height">Height:</label>
+            <input type="number" name="grid-height" id="grid-height" min="1" max="50" value="20">
+          </div>
+          <div class="input-row">
+            <label for="grid-width">Width:</label>
+            <input type="number" name="grid-width" id="grid-width" min="1" max="50" value="20">
+          </div>
+          <button type="button" id="create-grid-button">Create Grid</button>
+        </fieldset>
+      </form>
+      <div>
+        <label for="color-picker">Pick a color</label>
+        <input type="color" name="" id="color-picker">
+      </div>
+    </section>
+    <!-- CANVAS SECTION -->
+    <section>
+      <h1>Design Canvas</h1>
+      <table id="canvas"></table>
+    </section>
+  </main>
+  <script type="text/javascript" src="app.js"></script>
+</body>
+
+</html>
