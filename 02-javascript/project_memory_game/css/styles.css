@@ -1,0 +1,35 @@
+/* See card flipping https://www.youtube.com/watch?v=OV8MVmtgmoY */
+
+.card {
+  position: relative;
+  width: 250px;
+  height: 320px;
+  /* width: 100%;
+  height: 100%; */
+  transform-style: preserve-3d;
+  transition: all 0.5s ease;
+}
+
+/* rename this to show back */
+/* .card:hover {
+  transform: rotateY(180deg);
+} */
+
+.card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: red;
+}
+
+
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: blue;
+  /*  so the back element rotates when we move th cursor away */
+  transform: rotateY(180deg);
+}
