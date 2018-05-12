@@ -1,19 +1,23 @@
 /* See card flipping https://www.youtube.com/watch?v=OV8MVmtgmoY */
 
-.card {
+.card-container {
   position: relative;
-  width: 250px;
-  height: 320px;
-  /* width: 100%;
-  height: 100%; */
+  width: 120px;
+  height: 120px;
   transform-style: preserve-3d;
   transition: all 0.5s ease;
+  cursor: pointer;
 }
 
-/* rename this to show back */
-/* .card:hover {
-  transform: rotateY(180deg);
+/* .card-a {
+  background: url('img/morning-glory.jpg');
 } */
+
+/* Applied to both front and back of cards */
+.card {
+  border-radius: 15px;
+  box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+}
 
 .card-front {
   position: absolute;
@@ -21,6 +25,8 @@
   height: 100%;
   backface-visibility: hidden;
   background: red;
+  transform: rotateY(180deg);
+  cursor: default;
 }
 
 
@@ -31,5 +37,4 @@
   backface-visibility: hidden;
   background: blue;
   /*  so the back element rotates when we move th cursor away */
-  transform: rotateY(180deg);
 }

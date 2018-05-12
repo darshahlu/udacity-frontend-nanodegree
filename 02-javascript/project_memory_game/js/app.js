@@ -3,6 +3,11 @@ const gameBoardBackdrop = document.querySelector("#game-board-backdrop");
 const starScore = document.querySelector("#star-score");
 const moveAmount = document.querySelector("#move-amount");
 
+const cardContainerClassName = 'card-container';
+const cardClassName = 'card'
+const cardFrontClassName = 'card-front';
+const cardBackClassName = 'card-back';
+
 const cardTypes = ["card-a", "card-b", "card-c"]
 const totalCards = cardTypes.length * 2; // 2 of each card type
 const fewestPossibleMoves = totalCards / 2;
@@ -67,14 +72,17 @@ function getShuffledDeck() {
 
 function createCard(cardType) {
   const newCard = document.createElement('div');
-  newCard.classList.add('card');
+  newCard.classList.add(cardContainerClassName);
   newCard.classList.add(cardType);
   const newCardFront = document.createElement('div');
-  newCardFront.classList.add('card-front');
+  newCardFront.classList.add(cardFrontClassName);
+  newCardFront.classList.add(cardClassName);
   const newCardBack = document.createElement('div');
-  newCardBack.classList.add('card-back');
-  newCard.appendChild(newCardFront);
+  newCardBack.classList.add(cardBackClassName);
+  newCardBack.classList.add(cardClassName);
   newCard.appendChild(newCardBack);
+  newCard.appendChild(newCardFront);
+
   return newCard
 }
 
@@ -130,8 +138,8 @@ function displayLatestScore() {
 }
 
 // Card-related functions
-function isCardFront(element) {
-  return element.nodeName === 'DIV' && element.classList[0] === 'card-front'
+function isCardBack(element) {
+  return element.nodeName === 'DIV' && element.classList[0] === cardBackClassName;
 }
 
 function showCard(card) {
@@ -178,7 +186,7 @@ function checkIfGameIsWon() {
 gameBoardBackdrop.addEventListener("click", cardClickedListener);
 
 function cardClickedListener(event) {
-  if (isCardFront(element = event.target) && isOkToSelectCard()) {
+  if (isCardBack(element = event.target) && isOkToSelectCard()) {
     const card = event.target.parentElement;
     if (gameStartTime === null) {
       gameStartTime = performance.now()
