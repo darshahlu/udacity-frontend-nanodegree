@@ -1,13 +1,18 @@
-
 // Game constants / elements
 const gameBoardBackdrop = document.querySelector("#game-board-backdrop");
-const cardTypes = ["card-a", "card-b"]
+const starScore = document.querySelector("#star-score");
+const moveAmount = document.querySelector("#move-amount");
+
+const cardTypes = ["card-a", "card-b", "card-c"]
 const totalCards = cardTypes.length * 2; // 2 of each card type
+const fewestPossibleMoves = totalCards / 2;
 
 // Game state
 let selectedCards = []
 let foundCards = 0;
 let totalMoves = 0;
+let gameStartTime = null;
+let gameEndTime = null;
 
 // Card selection-related functions
 function isOkToSelectCard() {
@@ -30,9 +35,12 @@ function resetGameStateAndClearBoard() {
   clearSelectedCards()
   foundCards = 0;
   totalMoves = 0;
+  gameStartTime = null;
+  gameEndTime = null;
   while (gameBoardBackdrop.firstChild) {
     gameBoardBackdrop.removeChild(gameBoardBackdrop.firstChild);
   }
+  displayLatestScore();
 }
 
 // Fisher–Yates shuffle from https://bost.ocks.org/mike/shuffle/
@@ -80,10 +88,45 @@ function createAndDisplayDeck() {
   gameBoardBackdrop.appendChild(deckFragment);
 }
 
-function updateMovesAndRating() {
+function updateMoves() {
   totalMoves += 1;
-  // update dom
-  // update star
+}
+
+function getStarRating() {
+  let starRating = 0;
+  if (totalMoves < fewestPossibleMoves * 4) {
+    starRating += 1;
+  }
+  if (totalMoves < fewestPossibleMoves * 3) {
+    starRating += 1;
+  }
+  if (totalMoves < fewestPossibleMoves * 2) {
+    starRating += 1;
+  }
+  return starRating;
+}
+
+function getStarDisplay(starRating) {
+  const emptyStar = '\u2606';
+  const filledStar = '\u2605';
+  switch(starRating) {
+    case 0:
+    return emptyStar + emptyStar + emptyStar;
+    case 1:
+    return filledStar + emptyStar + emptyStar;
+    case 2:
+    return filledStar + filledStar + emptyStar;
+    case 3:
+    return filledStar + filledStar + filledStar;
+  }
+}
+
+function displayLatestScore() {
+  moveAmount.textContent = totalMoves;
+  const starRating = getStarRating();
+  const starDisplay = getStarDisplay(starRating);
+  starScore.textContent = starDisplay;
+  console.log(`${starRating} stars: ${starDisplay}`);
 }
 
 // Card-related functions
@@ -110,11 +153,11 @@ function isMatchingCardPair(cardA, cardB) {
 function checkIfCardsMatch(cardA, cardB) {
   console.log("checkIfCardsMatch");
   if (isMatchingCardPair(cardA, cardB)) {
-    console.log("chads match");
+    console.log("cards match");
     foundCards += 2;
     checkIfGameIsWon();
   } else {
-    console.log("chads mismatch");
+    console.log("cards mismatch");
     setTimeout(hideCard, 1000, cardA);
     setTimeout(hideCard, 1000, cardB);
   }
@@ -123,7 +166,9 @@ function checkIfCardsMatch(cardA, cardB) {
 function checkIfGameIsWon() {
   console.log("checkIfGameIsWon");
   if (isGameWon()) {
-    console.log('You won!');
+    gameEndTime = performance.now()
+    const elapsedTime =  (gameEndTime - gameStartTime) / 1000;
+    console.log('You won! Took ' + elapsedTime.toFixed(2) + 's');
     resetGameStateAndClearBoard();
     createAndDisplayDeck();
   }
@@ -135,12 +180,19 @@ gameBoardBackdrop.addEventListener("click", cardClickedListener);
 function cardClickedListener(event) {
   if (isCardFront(element = event.target) && isOkToSelectCard()) {
     const card = event.target.parentElement;
+    if (gameStartTime === null) {
+      gameStartTime = performance.now()
+    }
     showCard(card);
     selectCard(card);
     if (bothCardsSelected()) {
-      updateMovesAndRating();
+      updateMoves();
+      displayLatestScore();
       checkIfCardsMatch(cardA = selectedCards[0], cardB = selectedCards[1]);
       clearSelectedCards();
     }
   }
 }
+
+resetGameStateAndClearBoard();
+createAndDisplayDeck();
