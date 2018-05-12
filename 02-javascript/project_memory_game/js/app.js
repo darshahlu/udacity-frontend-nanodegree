@@ -1,3 +1,8 @@
+// TODO: Congrats popup
+// TODO: display timer
+// TODO: Restart button
+// TODO (opt): animate correct and incorrect guesses.
+
 // Game constants / elements
 const gameBoardBackdrop = document.querySelector("#game-board-backdrop");
 const starScore = document.querySelector("#star-score");
@@ -8,7 +13,10 @@ const cardClassName = 'card'
 const cardFrontClassName = 'card-front';
 const cardBackClassName = 'card-back';
 
-const cardTypes = ["card-a", "card-b", "card-c", "card-d"]
+const cardTypes = [
+  "card-monkey", "card-pizza", "card-hotdog", "card-dragon",
+  "card-pug", "card-woman", "card-baby", "card-cactus", 'new-card',
+]
 const totalCards = cardTypes.length * 2; // 2 of each card type
 const fewestPossibleMoves = totalCards / 2;
 
@@ -102,13 +110,13 @@ function updateMoves() {
 
 function getStarRating() {
   let starRating = 0;
-  if (totalMoves < fewestPossibleMoves * 4) {
-    starRating += 1;
-  }
-  if (totalMoves < fewestPossibleMoves * 3) {
+  if (totalMoves < fewestPossibleMoves * 2.5) {
     starRating += 1;
   }
   if (totalMoves < fewestPossibleMoves * 2) {
+    starRating += 1;
+  }
+  if (totalMoves < fewestPossibleMoves * 1.5) {
     starRating += 1;
   }
   return starRating;
@@ -117,15 +125,15 @@ function getStarRating() {
 function getStarDisplay(starRating) {
   const emptyStar = '\u2606';
   const filledStar = '\u2605';
-  switch(starRating) {
+  switch (starRating) {
     case 0:
-    return emptyStar + emptyStar + emptyStar;
+      return emptyStar + emptyStar + emptyStar;
     case 1:
-    return filledStar + emptyStar + emptyStar;
+      return filledStar + emptyStar + emptyStar;
     case 2:
-    return filledStar + filledStar + emptyStar;
+      return filledStar + filledStar + emptyStar;
     case 3:
-    return filledStar + filledStar + filledStar;
+      return filledStar + filledStar + filledStar;
   }
 }
 
@@ -175,7 +183,7 @@ function checkIfGameIsWon() {
   console.log("checkIfGameIsWon");
   if (isGameWon()) {
     gameEndTime = performance.now()
-    const elapsedTime =  (gameEndTime - gameStartTime) / 1000;
+    const elapsedTime = (gameEndTime - gameStartTime) / 1000;
     console.log('You won! Took ' + elapsedTime.toFixed(2) + 's');
     resetGameStateAndClearBoard();
     createAndDisplayDeck();
