@@ -8,7 +8,7 @@ const cardClassName = 'card'
 const cardFrontClassName = 'card-front';
 const cardBackClassName = 'card-back';
 
-const cardTypes = ["card-a", "card-b", "card-c"]
+const cardTypes = ["card-a", "card-b", "card-c", "card-d"]
 const totalCards = cardTypes.length * 2; // 2 of each card type
 const fewestPossibleMoves = totalCards / 2;
 

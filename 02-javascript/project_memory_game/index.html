@@ -12,54 +12,61 @@ fewer guesses the better!">
 </head>
 
 <body>
-  <header>
-    <h1>Memory!</h1>
-  </header>
+  <div class="container">
+    <header>
+      <h1>Memory!</h1>
+    </header>
 
-  <main>
-    <section class="score-and-controls">
-      <span id="star-score"></span>
-      <span class="total-moves">
+    <main>
+      <section class="score-and-controls">
+        <div>
+          <span id="star-score"></span>
+          <span class="total-moves">
         <i id="move-amount">0</i> Moves
+      </div>
+      <div>
+        Reset
+      </div>
       </span>
-    </section>
+      </section>
 
-    <section id="game-board-backdrop">
+      <section id="game-board-backdrop">
 
-      <div class="card card-a">
-        <div class="card-front">front
+        <div class="card-container card-a">
+          <div class="card-front card">front
+          </div>
+          <div class="card-back card">back
+          </div>
         </div>
-        <div class="card-back">back
-        </div>
-      </div>
 
-      <div class="card card-a">
-        <div class="card-front">
+        <div class="card-container card-a">
+          <div class="card-front card">
+          </div>
+          <div class="card-back card">
+          </div>
         </div>
-        <div class="card-back">
+
+        <div class="card-container card-b">
+          <div class="card-front card">
+          </div>
+          <div class="card-back card">
+          </div>
         </div>
-      </div>
 
-      <div class="card card-b">
-        <div class="card-front">
+        <div class="card-container card-b">
+          <div class="card-front card">
+          </div>
+          <div class="card-back card">
+          </div>
         </div>
-        <div class="card-back">
-        </div>
-      </div>
 
-      <div class="card card-b">
-        <div class="card-front">
-        </div>
-        <div class="card-back">
-        </div>
-      </div>
+      </section>
 
-    </section>
+    </main>
 
-  </main>
+    <script type="text/javascript" src="js/app.js"></script>
 
-  <script type="text/javascript" src="js/app.js"></script>
-
+    </div>
 </body>
 
 </html>
