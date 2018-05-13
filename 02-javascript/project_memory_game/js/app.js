@@ -1,12 +1,11 @@
-// TODO: Congrats popup
-// TODO: display timer
-// TODO: Restart button
 // TODO (opt): animate correct and incorrect guesses.
 
 // Game constants / elements
 const gameBoardBackdrop = document.querySelector("#game-board-backdrop");
 const starScore = document.querySelector("#star-score");
 const moveAmount = document.querySelector("#move-amount");
+const reset = document.querySelector("#reset");
+const timerDisplay = document.querySelector("#timer-display");
 
 const cardContainerClassName = 'card-container';
 const cardClassName = 'card'
@@ -15,7 +14,7 @@ const cardBackClassName = 'card-back';
 
 const cardTypes = [
   "card-monkey", "card-pizza", "card-hotdog", "card-dragon",
-  "card-pug", "card-woman", "card-baby", "card-cactus", 'new-card',
+  "card-pug", "card-woman", "card-baby", "card-cactus",
 ]
 const totalCards = cardTypes.length * 2; // 2 of each card type
 const fewestPossibleMoves = totalCards / 2;
@@ -26,6 +25,12 @@ let foundCards = 0;
 let totalMoves = 0;
 let gameStartTime = null;
 let gameEndTime = null;
+let timerIntervalId = null;
+
+function updateTimerDisplay() {
+  const elapsedTime = getElapsedSecs(performance.now());
+  timerDisplay.textContent = elapsedTime.toFixed(0) + 's';
+}
 
 // Card selection-related functions
 function isOkToSelectCard() {
@@ -46,10 +51,14 @@ function isGameWon() {
 
 function resetGameStateAndClearBoard() {
   clearSelectedCards()
+  clearInterval(timerIntervalId);
   foundCards = 0;
   totalMoves = 0;
   gameStartTime = null;
   gameEndTime = null;
+  timerIntervalId = null;
+  timerDisplay.textContent = '0s';
+
   while (gameBoardBackdrop.firstChild) {
     gameBoardBackdrop.removeChild(gameBoardBackdrop.firstChild);
   }
@@ -90,7 +99,6 @@ function createCard(cardType) {
   newCardBack.classList.add(cardClassName);
   newCard.appendChild(newCardBack);
   newCard.appendChild(newCardFront);
-
   return newCard
 }
 
@@ -179,25 +187,31 @@ function checkIfCardsMatch(cardA, cardB) {
   }
 }
 
+function getElapsedSecs(timeNow) {
+  return (timeNow - gameStartTime) / 1000;
+}
+
 function checkIfGameIsWon() {
   console.log("checkIfGameIsWon");
   if (isGameWon()) {
-    gameEndTime = performance.now()
-    const elapsedTime = (gameEndTime - gameStartTime) / 1000;
-    console.log('You won! Took ' + elapsedTime.toFixed(2) + 's');
-    resetGameStateAndClearBoard();
-    createAndDisplayDeck();
+    localStorage.setItem("elapsedGameTime", getElapsedSecs(performance.now()));
+    localStorage.setItem("totalMoves", totalMoves);
+    localStorage.setItem("starScoreAmount", getStarRating());
+    window.location.href = 'winner.html';
   }
 }
 
 // Listeners
 gameBoardBackdrop.addEventListener("click", cardClickedListener);
+reset.addEventListener("click", startNewGame);
 
 function cardClickedListener(event) {
   if (isCardBack(element = event.target) && isOkToSelectCard()) {
     const card = event.target.parentElement;
     if (gameStartTime === null) {
       gameStartTime = performance.now()
+      // start displaying timer after game starts
+      timerIntervalId = setInterval(updateTimerDisplay, 1000);
     }
     showCard(card);
     selectCard(card);
@@ -210,5 +224,9 @@ function cardClickedListener(event) {
   }
 }
 
-resetGameStateAndClearBoard();
-createAndDisplayDeck();
+function startNewGame() {
+  resetGameStateAndClearBoard();
+  createAndDisplayDeck();
+}
+
+startNewGame();
