@@ -117,10 +117,7 @@ function updateMoves() {
 }
 
 function getStarRating() {
-  let starRating = 0;
-  if (totalMoves < fewestPossibleMoves * 2.5) {
-    starRating += 1;
-  }
+  let starRating = 1;
   if (totalMoves < fewestPossibleMoves * 2) {
     starRating += 1;
   }
@@ -197,7 +194,12 @@ function checkIfGameIsWon() {
     localStorage.setItem("elapsedGameTime", getElapsedSecs(performance.now()));
     localStorage.setItem("totalMoves", totalMoves);
     localStorage.setItem("starScoreAmount", getStarRating());
-    window.location.href = 'winner.html';
+
+    setTimeout(function() {
+      window.location.href = 'winner.html';
+    }, 2000,
+  )
+
   }
 }
 
