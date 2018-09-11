@@ -26,7 +26,7 @@ class GameStats {
       this.max_level_reached += 1;
     }
     this.enemies_dodged += all_enemies.length;
-    for (var enemy of all_enemies) {
+    for (let enemy of all_enemies) {
       if (enemy.speed > this.enemies_max_speed) {
         this.enemies_max_speed = enemy.speed;
       }
@@ -197,7 +197,7 @@ class GameState {
   populateEnemies(level) {
     let enemy_creator = new EnemyCreator(this.level * 100, this.level * 100 + 100, this.level * 2, this.level * 2.5);
     enemy_creator.createEnemies();
-    for (var enemy of enemy_creator.enemies) {
+    for (let enemy of enemy_creator.enemies) {
       this.allEnemies.push(enemy);
     }
   }
@@ -222,7 +222,7 @@ gameState.startNewGame();
 
 // Event listeners
 document.addEventListener('keyup', function(e) {
-  var allowedKeys = {
+  let allowedKeys = {
     37: 'left',
     38: 'up',
     39: 'right',
