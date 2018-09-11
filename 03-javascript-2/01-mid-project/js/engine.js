@@ -79,7 +79,25 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+        checkWin();
+    }
+
+    function checkCollisions() {
+      for (var enemy of allEnemies) {
+        if (player.isTouchedBy(enemy)) {
+          console.log('collision detected!');
+          gameState.startNewGame('lose');
+        }
+      }
+    }
+
+    function checkWin() {
+      console.log('checking for a win');
+      if (player.isInWinningPosition()) {
+        console.log('win detected!');
+        gameState.startNewGame('win');
+      }
     }
 
     /* This is called by the update function and loops through all of the
