@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Darshan Ahluwalia">
+  <title>You lose!</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <section class="container">
+    <h1>You...*sniffle*...lost :'(</h1>
+    <img src="images/sad-face.gif">
+    <section class="stats">
+      <h1>Stats</h1>
+      <div>Current Level: <i id="current-level-display">1</i></div>
+      <div>Max Level Reached: <i id="max-level-display">1</i></div>
+      <div>Total Wins: <i id="wins-display">0</i></div>
+      <div>Total Losses: <i id="losses-display">0</i></div>
+      <div>Enemies Dodged: <i id="enemies-num-display">0</i></div>
+      <div>Fastest Enemy Dodged: <i id="enemies-speed-display">0</i></div>
+    </section>
+    <button name="play-again" onclick="location.href='index.html';">Play again?</button>
+  </section>
+  <script type="text/javascript">
+    let gameStats = JSON.parse(sessionStorage.getItem("gameStats"));
+    document.querySelector("#current-level-display").textContent = gameStats.current_level;
+    document.querySelector("#max-level-display").textContent = gameStats.max_level_reached;
+    document.querySelector("#wins-display").textContent = gameStats.wins;
+    document.querySelector("#losses-display").textContent = gameStats.losses;
+    document.querySelector("#enemies-num-display").textContent = gameStats.enemies_dodged;
+    document.querySelector("#enemies-speed-display").textContent = gameStats.enemies_max_speed;
+  </script>
+</body>
+
+</html>
