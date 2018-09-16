@@ -1,6 +1,11 @@
 frontend-nanodegree-arcade-game
 ===============================
 
+## How to run the game
+1. Clone the repository locally.
+2. Navigate to 03-javascript-2/01-mid-project/
+3. Launch index.html in a browser.
+
 ## How to play
 The object of the game is to get your character to the water at the top of the board.
 Move the character using the up, down, left and right arrows.
