@@ -112,7 +112,12 @@ class EnemyCreator {
    * @returns {Array}
    */
   createEnemies() {
-    let num_enemies = Math.floor(Math.random() * (this.enemies_max - this.enemies_min + 1)) + this.enemies_min;
+    let num_enemies = Math.floor(Math.random() * (this.enemies_max - this.enemies_min + 1) + this.enemies_min);
+    console.log(`enemies_min: ${this.enemies_min}.`)
+    console.log(`enemies_max: ${this.enemies_max}.`)
+    console.log(`enemy_speed_min: ${this.enemy_speed_min}.`)
+    console.log(`enemy_speed_max: ${this.enemy_speed_max}.`)
+    console.log(`Creating ${num_enemies} enemies.`)
     for (let i = 0; i < num_enemies; i++) {
       let enemy = this.createEnemy();
       this.enemies.push(enemy);
@@ -377,7 +382,11 @@ class GameState {
    */
   populateEnemies() {
     let level = this.gameStats.current_level;
-    let enemy_creator = new EnemyCreator(level * 50, level * 50 + 100, level * 1.25, level * 1.5);
+    let speed_min = Math.log10(level*500) * 60;
+    let speed_max = Math.log10(level*5000) * 60;
+    let enemies_min = Math.log10(level+3) * 5;
+    let enemies_max = Math.log10(level+3) * 6;
+    let enemy_creator = new EnemyCreator(speed_min, speed_max, enemies_min, enemies_max);
     enemy_creator.createEnemies();
     for (let enemy of enemy_creator.enemies) {
       this.allEnemies.push(enemy);

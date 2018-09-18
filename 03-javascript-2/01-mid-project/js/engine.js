@@ -97,7 +97,7 @@ var Engine = (function(global) {
   }
 
   function checkWin() {
-    console.log('checking for a win');
+    // console.log('checking for a win');
     if (player.isInWinningPosition()) {
       console.log('win detected!');
       gameState.startNewGame('win');
