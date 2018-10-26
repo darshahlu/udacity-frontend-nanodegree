@@ -50,7 +50,6 @@ $(function() {
       const menu_coll = document.getElementsByClassName('menu-icon-link');
       expect(menu_coll.length).toBe(1);
 
-      expect(isMenuState(hidden = true)).toBe(true);
       menu_coll[0].click();
       expect(isMenuState(hidden = false)).toBe(true);
       menu_coll[0].click();
@@ -60,19 +59,38 @@ $(function() {
   });
 
   describe('Initial Entries', function() {
-    /* TODO: Write a test that ensures when the loadFeed
-     * function is called and completes its work, there is at least
-     * a single .entry element within the .feed container.
-     * Remember, loadFeed() is asynchronous so this test will require
-     * the use of Jasmine's beforeEach and asynchronous done() function.
-     */
+
+    beforeEach(function(done) {
+      loadFeed(0, function() {
+        done();
+      });
+    });
+
+    it('should have at least one entry within the .feed container', function(done) {
+      expect($('.feed').length).not.toBeLessThan(1);
+      done();
+    });
   });
 
   describe('New Feed Selection', function() {
-    /* TODO: Write a test that ensures when a new feed is loaded
-     * by the loadFeed function that the content actually changes.
-     * Remember, loadFeed() is asynchronous.
-     */
+
+    let feed_1_data;
+    let feed_2_data;
+
+    beforeEach(function(done) {
+      loadFeed(0, function() {
+        feed_1_data = $('.feed').html();
+        loadFeed(1, function() {
+          feed_2_data = $('.feed').html();
+          done();
+        });
+      });
+    });
+
+    it('has content which changes', function(done) {
+      expect(feed_1_data).not.toEqual(feed_2_data);
+      done();
+    })
   });
 
 }());
