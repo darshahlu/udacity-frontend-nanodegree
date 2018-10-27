@@ -11,12 +11,7 @@
 $(function() {
 
   const isMenuState = function(hidden) {
-    const body_coll = document.getElementsByTagName('body');
-    if (hidden === true) {
-      return body_coll[0].className === 'menu-hidden';
-    } else {
-      return body_coll[0].className === '';
-    }
+    return $('body').hasClass('menu-hidden') === hidden;
   }
 
   describe('RSS Feeds', function() {
@@ -29,6 +24,7 @@ $(function() {
       allFeeds.forEach(function(feed) {
         expect(feed.url).toBeDefined();
         expect(feed.url).not.toBeNull();
+        expect(feed.url.length).not.toBeLessThan(0);
       });
     });
 
@@ -36,6 +32,7 @@ $(function() {
       allFeeds.forEach(function(feed) {
         expect(feed.name).toBeDefined();
         expect(feed.name).not.toBeNull();
+        expect(feed.name.length).not.toBeLessThan(0);
       });
     });
 
@@ -47,12 +44,9 @@ $(function() {
     });
 
     it('changes visibility when clicked', function() {
-      const menu_coll = document.getElementsByClassName('menu-icon-link');
-      expect(menu_coll.length).toBe(1);
-
-      menu_coll[0].click();
+      $('.menu-icon-link').click();
       expect(isMenuState(hidden = false)).toBe(true);
-      menu_coll[0].click();
+      $('.menu-icon-link').click();
       expect(isMenuState(hidden = true)).toBe(true);
     });
 
@@ -66,8 +60,8 @@ $(function() {
       });
     });
 
-    it('should have at least one entry within the .feed container', function(done) {
-      expect($('.feed').length).not.toBeLessThan(1);
+    it('should have at least one .entry within the .feed container', function(done) {
+      expect($('.feed .entry').length).not.toBeLessThan(1);
       done();
     });
   });
