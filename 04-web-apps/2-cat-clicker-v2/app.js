@@ -10,6 +10,7 @@ class Kitten {
     this.count_element = this.element.querySelector('.click-count');
 
     // See: https://medium.freecodecamp.org/this-is-why-we-need-to-bind-event-handlers-in-class-components-in-react-f7ea1a6f93eb
+    // or, alternatively, a closure is needed.
     this.updateCount = this.updateCount.bind(this);
   }
   updateImage() {
