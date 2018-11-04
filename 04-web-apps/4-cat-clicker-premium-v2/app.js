@@ -32,20 +32,9 @@ class Model {
   }
 }
 
-// Octopus
-class Octopus {
-  constructor(model) {
-    this.model = model;
-    this.cat_list_element = document.querySelector('.cat-list')
-
-    // See: https://medium.freecodecamp.org/this-is-why-we-need-to-bind-event-handlers-in-class-components-in-react-f7ea1a6f93eb
-    // or, alternatively, a closure is needed.
-    this.createNewCatListItem = this.createNewCatListItem.bind(this);
-    this.populateCatListWithKitten = this.populateCatListWithKitten.bind(this);
-    this.populateCatList = this.populateCatList.bind(this);
-    this.catItemClickedEvent = this.catItemClickedEvent.bind(this);
-    this.catClicked = this.catClicked.bind(this);
-    this.createNewCatFigure = this.createNewCatFigure.bind(this);
+// Views
+class CatView {
+  constructor() {
   }
   createNewCatFigure(kitten) {
     const fig = document.createElement('figure');
@@ -68,6 +57,19 @@ class Octopus {
     fig.appendChild(caption);
     return fig;
   }
+  render(kitten) {
+    // display that cat
+    const catFigure = this.createNewCatFigure(kitten);
+    const catDisplayArea = document.querySelector('#cat-display-area');
+    const catFigureOld = document.querySelector('.cat-figure');
+    catFigureOld.replaceWith(catFigure);
+  }
+}
+
+class CatListView {
+  constructor() {
+    this.cat_list_element = document.querySelector('.cat-list');
+  }
   createNewCatListItem(kitten) {
     const li = document.createElement('li');
     li.classList.add('cat-item');
@@ -82,29 +84,40 @@ class Octopus {
     let new_cat_last_item = this.createNewCatListItem(kitten);
     this.cat_list_element.appendChild(new_cat_last_item);
   }
-  populateCatList() {
-    for(let catId in this.model.cats) {
-      let kitten = this.model.getCat(catId);
+  render(cats) {
+    for(let catId in cats) {
+      let kitten = cats[catId];
       this.populateCatListWithKitten(kitten);
-      this.cat_list_element.addEventListener("click", this.catItemClickedEvent);
     }
+  }
+  addEventListeners(fn) {
+    this.cat_list_element.addEventListener("click", fn);
+  }
+}
+
+// Octopus
+class Octopus {
+  constructor(model, catView, catListView) {
+    this.model = model;
+    this.catView = catView;
+    this.catListView = catListView;
+
+    // See: https://medium.freecodecamp.org/this-is-why-we-need-to-bind-event-handlers-in-class-components-in-react-f7ea1a6f93eb
+    // or, alternatively, a closure is needed.
+    this.catItemClickedEvent = this.catItemClickedEvent.bind(this);
   }
   catItemClickedEvent(event) {
     if (event.target.nodeName === 'A') {
       let catId = event.target.getAttribute('id');
       console.log(catId, 'selected');
-      this.catClicked(catId);
+      let kitten = this.model.getCat(catId)
+      this.catView.render(kitten);
     }
   }
-  catClicked(catId) {
-    // display that cat
-    const catFigure = this.createNewCatFigure(this.model.getCat(catId));
-    const catDisplayArea = document.querySelector('#cat-display-area');
-    const catFigureOld = document.querySelector('.cat-figure');
-    catFigureOld.replaceWith(catFigure);
-  }
   main() {
-    this.populateCatList();
+    this.catListView.render(this.model.cats);
+    // Not sure how to get around doing this funkiness.
+    this.catListView.addEventListeners(this.catItemClickedEvent);
   }
 }
 
@@ -116,7 +129,9 @@ function main() {
   model.addCat('Smoky', 'smoky.jpg');
   model.addCat('Stinky', 'stinky.jpg');
   model.addCat('Mobius', 'mobius.jpg');
-  const octopus = new Octopus(model);
+  const catView = new CatView();
+  const catListView = new CatListView();
+  const octopus = new Octopus(model, catView, catListView);
 
   // Logic
   octopus.main();
