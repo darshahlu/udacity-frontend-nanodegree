@@ -27,11 +27,15 @@ class Model {
     let id = name
     this.cats[id] = new Kitten(id=id, name=name, src=src);
   }
+  getCat(id) {
+    return this.cats[id];
+  }
 }
-class CatClickerPremium {
-  constructor(kittens) {
-    this.kittens = kittens;
 
+// Octopus
+class Octopus {
+  constructor(model) {
+    this.model = model;
     this.cat_list_element = document.querySelector('.cat-list')
 
     // See: https://medium.freecodecamp.org/this-is-why-we-need-to-bind-event-handlers-in-class-components-in-react-f7ea1a6f93eb
@@ -79,8 +83,8 @@ class CatClickerPremium {
     this.cat_list_element.appendChild(new_cat_last_item);
   }
   populateCatList() {
-    for(let catId in this.kittens) {
-      let kitten = this.kittens[catId];
+    for(let catId in this.model.cats) {
+      let kitten = this.model.getCat(catId);
       this.populateCatListWithKitten(kitten);
       this.cat_list_element.addEventListener("click", this.catItemClickedEvent);
     }
@@ -94,10 +98,13 @@ class CatClickerPremium {
   }
   catClicked(catId) {
     // display that cat
-    const catFigure = this.createNewCatFigure(this.kittens[catId]);
+    const catFigure = this.createNewCatFigure(this.model.getCat(catId));
     const catDisplayArea = document.querySelector('#cat-display-area');
     const catFigureOld = document.querySelector('.cat-figure');
     catFigureOld.replaceWith(catFigure);
+  }
+  main() {
+    this.populateCatList();
   }
 }
 
@@ -109,10 +116,10 @@ function main() {
   model.addCat('Smoky', 'smoky.jpg');
   model.addCat('Stinky', 'stinky.jpg');
   model.addCat('Mobius', 'mobius.jpg');
-  const catClicker = new CatClickerPremium(kittens=model.cats);
+  const octopus = new Octopus(model);
 
   // Logic
-  catClicker.populateCatList();
+  octopus.main();
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
