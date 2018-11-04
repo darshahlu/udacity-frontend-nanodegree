@@ -4,20 +4,30 @@ class Kitten {
     this.id = id;
     this.name = name;
     this.src = src;
-    this.count = 0;
+    this.clickCount = 0;
     this.figure = null;
     this.updateCount = this.updateCount.bind(this);
   }
   updateCount() {
-    this.count = this.count + 1;
-    console.log('updating', this.name, 'to', this.count);
-    this.figure.querySelector('.click-count').textContent = this.count;
+    this.clickCount = this.clickCount + 1;
+    console.log('updating', this.name, 'to', this.clickCount);
+    this.figure.querySelector('.click-count').textContent = this.clickCount;
   }
   setFigure(figure) {
     this.figure = figure;
   }
 }
 
+class Model {
+  constructor() {
+    this.cats = {};
+  }
+  addCat(name, src) {
+    // TODO: ensure unique ID
+    let id = name
+    this.cats[id] = new Kitten(id=id, name=name, src=src);
+  }
+}
 class CatClickerPremium {
   constructor(kittens) {
     this.kittens = kittens;
@@ -47,7 +57,7 @@ class CatClickerPremium {
     name.textContent = kitten.name;
     const clickCount = document.createElement('i');
     clickCount.classList.add('click-count');
-    clickCount.textContent = kitten.count;
+    clickCount.textContent = kitten.clickCount;
     caption.appendChild(name);
     caption.appendChild(clickCount);
     fig.appendChild(img);
@@ -93,14 +103,13 @@ class CatClickerPremium {
 
 function main() {
   // Constants
-  const kittens = {
-    'bob': new Kitten('bob', 'Bob', 'bob.jpg'),
-    'fuzzy': new Kitten('fuzzy', 'Fuzzy', 'fuzzy.jpg'),
-    'smoky': new Kitten('smoky', 'Smoky', 'smoky.jpg'),
-    'stinky': new Kitten('stinky', 'Stinky', 'stinky.jpg'),
-    'mobius': new Kitten('mobius', 'Mobius', 'mobius.jpg'),
-  };
-  const catClicker = new CatClickerPremium(kittens);
+  const model = new Model();
+  model.addCat('Bob', 'bob.jpg');
+  model.addCat('Fuzzy', 'fuzzy.jpg');
+  model.addCat('Smoky', 'smoky.jpg');
+  model.addCat('Stinky', 'stinky.jpg');
+  model.addCat('Mobius', 'mobius.jpg');
+  const catClicker = new CatClickerPremium(kittens=model.cats);
 
   // Logic
   catClicker.populateCatList();
